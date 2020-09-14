@@ -3356,9 +3356,9 @@ static void smblib_micro_usb_plugin(struct smb_charger *chg, bool vbus_rising)
 {
 	if (vbus_rising) {
 		/* use the typec flag even though its not typec */
-		chg->= 1;
+		chg-> 1;
 	} else {
-		chg->= 0;
+		chg-> 0;
 		smblib_update_usb_type(chg);
 		extcon_set_state_sync(chg->extcon, EXTCON_USB, false);
 		smblib_uusb_removal(chg);
@@ -4280,26 +4280,25 @@ static void smblib_handle_typec_cc_state_change(struct smb_charger *chg)
 		return;
 
 	typec_mode = smblib_get_prop_typec_mode(chg);
-	if (chg-> && (typec_mode != chg->typec_mode))
+	if (chg-> (typec_mode != chg->typec_mode))
 		smblib_handle_rp_change(chg, typec_mode);
 
 	chg->typec_mode = typec_mode;
 
-	if (!chg-> && chg->typec_mode != POWER_SUPPLY_TYPEC_NONE) {
-		chg-> = true;
+	if (!chg->typec_mode != POWER_SUPPLY_TYPEC_NONE) {
+		chg-> true;
 		smblib_dbg(chg, PR_MISC, "TypeC %s insertion\n",
 			smblib_typec_mode_name[chg->typec_mode]);
 		smblib_handle_typec_insertion(chg);
-	} else if (chg-> &&
-				chg->typec_mode == POWER_SUPPLY_TYPEC_NONE) {
-		chg-> = false;
+	} else if (chg->typec_mode == POWER_SUPPLY_TYPEC_NONE) {
+		chg-> false;
 		smblib_dbg(chg, PR_MISC, "TypeC removal\n");
 		smblib_handle_typec_removal(chg);
 	}
 
 	/* suspend usb if sink */
 	if ((chg->typec_status[3] & UFP_DFP_MODE_STATUS_BIT)
-			&& chg->)
+			&& chg->
 		vote(chg->usb_icl_votable, OTG_VOTER, true, 0);
 	else
 		vote(chg->usb_icl_votable, OTG_VOTER, false, 0);
