@@ -492,7 +492,7 @@ static int smb2_usb_set_prop(struct power_supply *psy,
 	int rc = 0;
 
 	mutex_lock(&chg->lock);
-	if (!chg->) {
+	if (!chg-> {
 		rc = -EINVAL;
 		goto unlock;
 	}
